@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Neon Mission Control</title>
+
+<style>
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: radial-gradient(circle, #0f0f1a, #000);
+    color: #00f7ff;
+    font-family: Arial;
+    text-align: center;
+}
+
+/* FIXED stats CSS */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px auto;
+    width: 60%;
+    color: #ff00ff;
+}
+
+h1 {
+    text-shadow: 0 0 20px #00f7ff;
+    font-size: 40px;
+}
+
+.box {
+    border: 2px solid #00f7ff;
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 0 20px #00f7ff;
+    border-radius: 10px;
+}
+
+button {
+    background: black;
+    color: #00f7ff;
+    border: 1px solid #00f7ff;
+    padding: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00f7ff;
+    color: black;
+}
+
+input {
+    padding: 10px;
+    width: 70%;
+}
+
+#progressBar {
+    width: 100%;
+    height: 20px;
+    border: 1px solid #00f7ff;
+    margin-top: 10px;
+}
+
+#progress {
+    height: 100%;
+    width: 0%;
+    background: #ff00ff;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚀 MISSION CONTROL</h1>
+
+<!-- FIXED clock -->
+<p id="clock">Loading time...</p>
+
+<div class="stats">
+    <p>🔥 Streak: 3 days</p>
+    <p>✅ Completed: <span id="doneCount">0</span></p>
+    <p>📌 Total: <span id="totalCount">0</span></p>
+</div>
+
+<p>SYSTEM ONLINE • READY FOR DEPLOYMENT</p>
+
+<div class="box">
+    <h2>🎯 Missions</h2>
+    <p id="statusText">Status: Waiting for missions...</p>
+
+    <input type="text" id="taskInput" placeholder="Enter mission">
+    <button onclick="addTask()">Add</button>
+
+    <ul id="taskList"></ul>
+
+    <p>Suggestion for today: Stay consistent today ⚡</p>
+</div>
+
+<div class="box">
+    <h2>⏳ Focus Timer</h2>
+    <p id="timer">25:00</p>
+    <button onclick="startTimer()">Start</button>
+</div>
+
+<div class="box">
+    <h2>📊 Progress</h2>
+    <div id="progressBar">
+        <div id="progress"></div>
+    </div>
+    <p id="level">Level: 1</p>
+</div>
+
+<script>
+let totalTasks = 0;
+let completedTasks = 0;
+
+/* CLOCK */
+function updateClock() {
+    let now = new Date();
+    document.getElementById("clock").textContent =
+        now.toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+
+/* ADD TASK */
+function addTask() {
+    let input = document.getElementById("taskInput");
+    if (input.value === "") return;
+
+    document.getElementById("statusText").textContent = "Status: Missions active 🚀";
+
+    let li = document.createElement("li");
+    li.textContent = input.value;
+
+    /* CLICK TASK */
+    li.onclick = function () {
+        if (!li.classList.contains("done")) {
+            li.classList.add("done");
+
+            li.style.textDecoration = "line-through";
+            li.style.opacity = "0.5";
+            li.style.color = "#ff00ff";
+
+            completedTasks++;
+            document.getElementById("doneCount").textContent = completedTasks;
+
+            document.getElementById("statusText").textContent = "Status: Mission completed ⚡";
+
+            updateProgress();
+        }
+    };
+
+    document.getElementById("taskList").appendChild(li);
+
+    /* ONLY ONE TOTAL INCREMENT */
+    totalTasks++;
+    document.getElementById("totalCount").textContent = totalTasks;
+
+    input.value = "";
+
+    updateProgress();
+}
+
+/* PROGRESS */
+function updateProgress() {
+    let percent = (completedTasks / totalTasks) * 100;
+    percent = Math.round(percent);
+
+    document.getElementById("progress").style.width = percent + "%";
+
+    let level = Math.floor(percent / 25) + 1;
+    document.getElementById("level").textContent = "Level: " + level;
+}
+
+/* TIMER */
+let time = 1500;
+
+function startTimer() {
+    let interval = setInterval(() => {
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+
+        document.getElementById("timer").textContent =
+            minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+
+        time--;
+
+        if (time < 0) {
+            clearInterval(interval);
+            alert("🚀 Mission Complete!");
+        }
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
