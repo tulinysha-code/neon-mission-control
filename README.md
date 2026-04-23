@@ -25,7 +25,7 @@ A retro-futuristic productivity dashboard designed to gamify studying and task m
 5. Use the focus timer to stay productive
 
 ## 🌐 Live Demo
-(Add your Netlify/Vercel link here)
+https://spiffy-marshmallow-0dc1fe.netlify.app/
 
 ## 📌 Concept
 
